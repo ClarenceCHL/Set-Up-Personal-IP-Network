@@ -1,0 +1,35 @@
+r1 echo "Step 1: Setting up IP addresses..."
+h1 ip addr add 10.0.0.2 dev h1-eth0
+h2 ip addr add 192.168.0.2 dev h2-eth0
+h3 ip addr add 10.0.0.4 dev h3-eth0
+h4 ip addr add 192.168.0.4 dev h4-eth0
+r1 ip addr add 10.0.0.1 dev r1-eth1
+r1 ip addr add 192.168.0.1 dev r1-eth2
+r1 ip addr add 10.0.0.3 dev r1-eth3
+r1 ip addr add 192.168.0.3 dev r1-eth4
+r1 echo "Done"
+r1 echo
+
+r1 echo "Step 2: Setting up the default routes for the hosts..."
+h1 ip route add default via 10.0.0.2
+h2 ip route add default via 192.168.0.2
+h3 ip route add default via 10.0.0.4
+h4 ip route add default via 192.168.0.4
+r1 echo "Done"
+r1 echo
+
+r1 echo "Step 3: Setting up the routes on the router..."
+r1 ip route add 10.0.0.2 via 10.0.0.1
+r1 ip route add 192.168.0.2 via 192.168.0.1
+r1 ip route add 10.0.0.4 via 10.0.0.3
+r1 ip route add 192.168.0.4 via 192.168.0.3
+r1 echo "Done"
+r1 echo
+
+r1 echo "Step 4: Testing..."
+r1 echo "<Testing 1> h1 ping 192.168.0.4"
+h1 ping 192.168.0.4 -w 5
+r1 echo
+r1 echo "<Testing 2> h1 traceroute 192.168.0.4"
+h1 traceroute 192.168.0.4
+r1 echo "All Done"
